@@ -1,4 +1,4 @@
-package udiDecola;
+	package udiDecola;
 
 import java.time.LocalTime;
 import java.time.LocalDate;
@@ -280,19 +280,65 @@ public class Hotel {
 		/*Finalmente, se houver quartos suficientes disponíveis para todos os 
   		tipos de quartos em todas as datas, o método retorna true*/
 		return true;
+
+		/*
+		Portanto, este método efetivamente verifica se há quartos suficientes disponíveis 
+  		para um determinado número de quartos simples, duplos, triplos e luxuosos em um 
+    		intervalo de datas, e se houver, ele atualiza o número de quartos disponíveis.*/
 	}
+
+	/*Este é um método chamado totalHotel na classe Hotel. Ele é usado para calcular o custo total 
+ 	do hotel para um determinado número de quartos simples, duplos, triplos e luxuosos em um 
+  	intervalo de datas.
+
+   	O método aceita seis parâmetros:
+
+	singles, duplos, triplos, luxos: Estes são inteiros que representam o número 
+ 	de quartos simples, duplos, triplos e luxuosos para os quais você deseja 
+  	calcular o custo.
+  
+	startDate, endDate: Estas são as datas de início e fim do intervalo de datas 
+ 	para o qual você deseja calcular o custo.
+   
+   
+   */
 	public double totalHotel(int singles, int duplos, int triplos, int luxos, LocalDate startDate, LocalDate endDate) {
+		
+		/*método, ele inicializa uma variável totalHotel como 0.0.
+  		Esta variável será usada para acumular o custo total.*/
 		double totalHotel = 0.0;
+
+	/*loop que percorre cada dia no intervalo de datas fornecido. Para cada dia, ele faz o seguinte:
+
+	Encontra o QuartoData para a data atual chamando o método encontraQuartoData.
+	Calcula o custo para o número de quartos simples, duplos, triplos e luxuosos 
+ 	solicitados multiplicando o número de quartos pelo custo diário de cada tipo 
+  	de quarto (getDiariaSingle, getDiariaDuplo, getDiariaTriplo, 
+	getDiariaLuxo). Ele adiciona esses custos ao totalHotel.*/
+		
 		for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			totalHotel += singles* (this.encontraQuartoData(date).getDiariaSingle()) + 
 					duplos* (this.encontraQuartoData(date).getDiariaDuplo()) + 
 					triplos* (this.encontraQuartoData(date).getDiariaTriplo()) +
 					luxos* (this.encontraQuartoData(date).getDiariaLuxo());
 		}
+
+		/*Finalmente, após percorrer todas as datas, o método retorna o totalHotel, que agora 
+  		representa o custo total do hotel para o número solicitado de quartos simples, duplos, 
+    		triplos e luxuosos no intervalo de datas fornecido*/
 		return totalHotel;
 	}
-	
+
+
+	/*Este é o método toString na classe Hotel. Ele está sobrescrevendo o método toString da 
+ 	classe Object no Java. O método toString é usado para fornecer uma representação em 
+  	string de um objeto.*/
+
+
 	public String toString() {
+		
+		/*o método toString retorna uma string que contém todas as informações sobre o hotel*/
+		
 		return "CNPJ: " + this.getCnpj() + "\nNome Oficial: " + this.getNomeOficial() + "\nNome de Divulgação: "
 				+ this.getNomeDivulg() + "\nEndereço: " + this.getEndereco() + "\nAno de Criação: " + this.getAnoCriacao() 
 				+ "\nNúmero de Estrelas: " + this.getNumEstrelas() + "\nNúmero de Quartos: "+ this.getNroQuartos() 
