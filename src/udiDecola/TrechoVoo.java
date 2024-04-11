@@ -136,11 +136,22 @@ public class TrechoVoo { //classe Trecho de Voo
 	public String getCodigoDestino() {
 		return codigoDestino;
 	}
-
+	/*
+ 	Este é um método setter chamado setCodigoDestino que é usado para definir o 
+  	valor da variável de instância codigoDestino na classe a que pertence. O 
+   	código de destino deve seguir um formato específico, e este método garante 
+    	que o código de destino fornecido segue esse formato antes de definir a variável 
+    	codigoDestino.
+ 	*/
 	public void setCodigoDestino(String destino) {
+		
+		/*Verifica se o comprimento do código de destino fornecido é 3. 
+  		Se não for, define codigo como uma string vazia.*/
 		if (destino.length() != 3) {
 		    this.codigo = "";
 		}
+
+		/*Conta o número de letras maiúsculas no código de destino fornecido*/
 		int letraCount = 0;
 		for (int i = 0; i < 3; i++) {
 		    char c = codigo.charAt(i);
@@ -148,8 +159,13 @@ public class TrechoVoo { //classe Trecho de Voo
 		        letraCount++;
 		    }
 		}
+		
+		/*Se o código de destino fornecido tiver exatamente 3 letras maiúsculas, 
+  		ele define codigoDestino como o código de destino fornecido. */
 		if (letraCount == 3)
 			this.codigoDestino = destino;
+			
+		/*Caso contrário, define codigoDestino como uma string vazia.*/
 		else
 			this.codigoDestino = "";
 	}
