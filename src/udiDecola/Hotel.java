@@ -5,28 +5,25 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 
-//A classe possui várias variáveis de instância
 public class Hotel {
-	private String cnpj; //o CNPJ do hotel
-	private String nomeOficial;//o nome oficial do hotel
-	private String nomeDivulg;//o nome de divulgação do hotel
-	private String endereco;//o endereço do hotel
-	private int anoCriacao;//o ano de criação do hotel
-	private int numEstrelas;//o número de estrelas do hotel
-	private boolean pets;//se o hotel aceita pets ou não
-	private int nroQuartos;//o número de quartos do hotel
-	private LocalTime checkIn;//o horário de check-in do hotel
-	private LocalTime checkOut;//o horário de check-out do hotel
-	private String msgDivulg;//a mensagem de divulgação do hotel
-	private FuncionarioParcerias func;/*um objeto da classe FuncionarioParcerias que representa o 
-					funcionário que realizou a parceria*/
-	private static float valFixoVenda = 50;//um valor fixo de venda
-	private ArrayList<QuartoData> listaQuartos = new ArrayList<QuartoData>();//uma lista de quartos do hotel
+	private String cnpj; 
+	private String nomeOficial;
+	private String nomeDivulg;
+	private String endereco;
+	private int anoCriacao;
+	private int numEstrelas;
+	private boolean pets;
+	private int nroQuartos;
+	private LocalTime checkIn;
+	private LocalTime checkOut;
+	private String msgDivulg;
+	private FuncionarioParcerias func;
+	
+	private static float valFixoVenda = 50;
+	private ArrayList<QuartoData> listaQuartos = new ArrayList<QuartoData>();
 	
 	public final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-	/*primeiro o são construtores que aceita todo os detalhes do hotel como parâmetros
- 	obs: primeiro aceita o horário de check-in e check-out como strings*/
 	
 	public Hotel(String cnpj, String nomeOficial, String nomeDivulg, String endereco, int anoCriacao, int numEstrelas,
 				 boolean pets, int nroQuartos, String checkIn, String checkOut, String msgDivulg, FuncionarioParcerias func) {
@@ -45,9 +42,6 @@ public class Hotel {
 		this.func.getHoteisCadas().add(this);
 		func.incrementaQtd();
 	}
-
-	/*primeiro o são construtores que aceita todo os detalhes do hotel como parâmetros
- 	obs:  o segundo aceita como LocalTime */
 	
 	public Hotel(String cnpj, String nomeOficial, String nomeDivulg, String endereco, int anoCriacao, int numEstrelas,
 				 boolean pets, int nroQuartos, LocalTime checkIn, LocalTime checkOut, String msgDivulg, FuncionarioParcerias func)
@@ -200,47 +194,21 @@ public class Hotel {
 	public void setListaQuartos(ArrayList<QuartoData> listaQuartos) {
 		this.listaQuartos = listaQuartos;
 	}
-	/*
-	 Este é um método chamado addDias na classe Hotel. 
-  	Ele é usado para adicionar dias à lista de quartos do hotel.
-
-   	O método aceita três parâmetros:
-    
-    	listaQuartos: uma lista de objetos QuartoData, que representa os quartos do hotel em datas específicas.
-    	startDate: a data de início do intervalo de datas para o qual os quartos devem ser adicionados.
-    	endDate: a data de fim do intervalo de datas para o qual os quartos devem ser adicionados.
-	*/
+	
 	public void addDias(ArrayList<QuartoData> listaQuartos, LocalDate startDate, LocalDate endDate) {
-		
-		/*Dentro do método, há um loop que começa na startDate e termina um dia antes da endDate. 
-  		Para cada dia nesse intervalo
-    		Para cada dia nesse intervalo, o método faz o seguinte: */
+
 		for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 
-			/*Cria um novo objeto QuartoData para a data atual do loop e o hotel atual 
-   			(representado pela palavra-chave this).*/
 			QuartoData q = new QuartoData(date, this);
 			
-			/*Adiciona o novo objeto QuartoData à listaQuartos.*/
 			listaQuartos.add(q);
-
-			/*Chama o método cadastrar da classe DAOQuartoData para cadastrar 
-   			o novo objeto QuartoData*/
 			DAOQuartoData.cadastrar(q);
 
-			/*obs: Portanto, este método efetivamente adiciona um QuartoData para cada dia 
-   			no intervalo de datas fornecido à listaQuartos e cadastra cada um desses QuartoData.*/
 		}
 	}
 
-	/*Este é um método chamado encontraQuartoData na classe Hotel. 
- 	Ele é usado para encontrar um objeto QuartoData em uma data específica.*/
-
 	public QuartoData encontraQuartoData(LocalDate date) {
 
-		/*Dentro do método, há um loop que percorre cada QuartoData na lista de quartos 
-  		do hotel (listaQuartos). Para cada QuartoData, ele verifica se a data do QuartoData
-    		é igual à data fornecida. Se for, ele retorna esse QuartoData.*/
 		for(QuartoData quarto : listaQuartos) {
 			if(quarto.getData().equals(date))
 				return quarto;
@@ -250,17 +218,8 @@ public class Hotel {
 		return null;
 	}
 
-	/*Este é um método chamado quartosDisponiveis na classe Hotel. Ele é usado para 
- 	verificar se há quartos disponíveis para um determinado número de quartos simples, 
-  	duplos, triplos e luxuosos em um intervalo de datas.*/
-
 	public Boolean quartosDisponiveis(int singles, int duplos, int triplos, int luxos, LocalDate startDate, LocalDate endDate) {
 
-		/*No primeiro loop, para cada dia, ele verifica se há quartos suficientes disponíveis 
-   		para o número de quartos simples, duplos, triplos e luxuosos solicitados. Ele faz 
-      		isso subtraindo o número solicitado do número total de quartos disponíveis para cada 
-	 	tipo de quarto. Se não houver quartos suficientes disponíveis para qualquer tipo de 
-    		quarto, ele retorna false.*/
 		
 		for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			if(this.encontraQuartoData(date).getQtdSingle() - singles < 0 || this.encontraQuartoData(date).getQtdDuplo() - duplos < 0 ||
@@ -268,53 +227,19 @@ public class Hotel {
 				return false;
 		}
 		
-		/*No segundo loop, se houver quartos suficientes disponíveis para todos os tipos de quartos, 
-  		ele decrementa o número de quartos disponíveis para cada tipo de quarto pelo número solicitado. 
-    		Isso é feito chamando o método decrementaQuartos no objeto QuartoData para a data atual.*/
 		
 		for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			this.encontraQuartoData(date).decrementaQuartos(singles, duplos, triplos, luxos);
 			
 		}
 
-		/*Finalmente, se houver quartos suficientes disponíveis para todos os 
-  		tipos de quartos em todas as datas, o método retorna true*/
 		return true;
-
-		/*
-		Portanto, este método efetivamente verifica se há quartos suficientes disponíveis 
-  		para um determinado número de quartos simples, duplos, triplos e luxuosos em um 
-    		intervalo de datas, e se houver, ele atualiza o número de quartos disponíveis.*/
 	}
-
-	/*Este é um método chamado totalHotel na classe Hotel. Ele é usado para calcular o custo total 
- 	do hotel para um determinado número de quartos simples, duplos, triplos e luxuosos em um 
-  	intervalo de datas.
-
-   	O método aceita seis parâmetros:
-
-	singles, duplos, triplos, luxos: Estes são inteiros que representam o número 
- 	de quartos simples, duplos, triplos e luxuosos para os quais você deseja 
-  	calcular o custo.
-  
-	startDate, endDate: Estas são as datas de início e fim do intervalo de datas 
- 	para o qual você deseja calcular o custo.
-   
-   
-   */
 	public double totalHotel(int singles, int duplos, int triplos, int luxos, LocalDate startDate, LocalDate endDate) {
 		
 		/*método, ele inicializa uma variável totalHotel como 0.0.
   		Esta variável será usada para acumular o custo total.*/
 		double totalHotel = 0.0;
-
-	/*loop que percorre cada dia no intervalo de datas fornecido. Para cada dia, ele faz o seguinte:
-
-	Encontra o QuartoData para a data atual chamando o método encontraQuartoData.
-	Calcula o custo para o número de quartos simples, duplos, triplos e luxuosos 
- 	solicitados multiplicando o número de quartos pelo custo diário de cada tipo 
-  	de quarto (getDiariaSingle, getDiariaDuplo, getDiariaTriplo, 
-	getDiariaLuxo). Ele adiciona esses custos ao totalHotel.*/
 		
 		for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			totalHotel += singles* (this.encontraQuartoData(date).getDiariaSingle()) + 
@@ -323,17 +248,8 @@ public class Hotel {
 					luxos* (this.encontraQuartoData(date).getDiariaLuxo());
 		}
 
-		/*Finalmente, após percorrer todas as datas, o método retorna o totalHotel, que agora 
-  		representa o custo total do hotel para o número solicitado de quartos simples, duplos, 
-    		triplos e luxuosos no intervalo de datas fornecido*/
 		return totalHotel;
 	}
-
-
-	/*Este é o método toString na classe Hotel. Ele está sobrescrevendo o método toString da 
- 	classe Object no Java. O método toString é usado para fornecer uma representação em 
-  	string de um objeto.*/
-
 
 	public String toString() {
 		
