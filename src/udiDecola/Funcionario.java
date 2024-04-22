@@ -1,6 +1,7 @@
 package udiDecola;
 
 import java.time.LocalDate;
+//
 
 public class Funcionario extends Pessoa {
 	
